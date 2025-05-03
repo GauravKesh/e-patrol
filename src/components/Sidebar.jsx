@@ -192,7 +192,7 @@ export default function Sidebar() {
           <div className={`p-4 border-t ${isDark ? 'border-gray-700' : 'border-gray-200'}`}>
             <div className="text-sm text-center opacity-70">
               <p>Beat Management System</p>
-              <p>© 2025 Team Vikasana</p>
+              <p>© 2025 E-Patrol</p>
             </div>
           </div>
         </div>

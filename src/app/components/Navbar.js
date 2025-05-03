@@ -45,7 +45,7 @@ export default function Navbar() {
               <div className="w-8 h-8 rounded-md bg-primary-500 flex items-center justify-center">
                 <span className="text-white font-bold">PD</span>
               </div>
-              <span className="font-bold text-xl text-primary-800 dark:text-primary-100">TeamVikasana</span>
+              <span className="font-bold text-xl text-primary-800 dark:text-primary-100">E-Patrol</span>
             </Link>
           </div>
 

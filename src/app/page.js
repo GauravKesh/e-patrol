@@ -230,7 +230,7 @@ export default function Home() {
       >
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <p className="text-center text-muted-foreground">
-            &copy; {new Date().getFullYear()} Centralized Beat Management System | TeamVikasana
+            &copy; {new Date().getFullYear()} Centralized Beat Management System
           </p>
         </div>
       </motion.footer>

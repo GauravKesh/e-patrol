@@ -3,7 +3,12 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import config from '@/app/context/Config';
+
 import Cookies from 'js-cookie';
+import api from '@/utils/axiosInstance';
+
+
 
 export default function LoginPage() {
     const router = useRouter();
@@ -17,15 +22,10 @@ export default function LoginPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const { data } = await axios.post(
-                'https://cyber-acrt.onrender.com/api/v1/auth/login',
-                form,
-                {
-                    headers: { 'Content-Type': 'application/json' },
-                }
-            );
-            
+            const { data } = await  api.post('/auth/login', form);
+
             const { token, userWithoutPassword } = data;
+
             Cookies.set('token', token, { expires: 7 });
             Cookies.set('user', userWithoutPassword.role);
             localStorage.setItem('token', token);

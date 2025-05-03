@@ -1,9 +1,8 @@
 "use client"
 import { createContext, useState, useContext, useEffect } from "react";
 import io from "socket.io-client";
-
+import config from "@/app/context/Config"; 
 const SocketContext = createContext(null);
-
 export const useSocket = () => {
   return useContext(SocketContext);
 };
@@ -14,9 +13,10 @@ export const SocketProvider = ({ children }) => {
 
   useEffect(() => {
     if (typeof window !== "undefined") { 
-    const socketConnection = io("https://cyber-acrt.onrender.com/", {
-      transports: ["websocket"],
-    });
+      const socketConnection = io(config.socketUrl, {
+        transports: ["websocket"],
+      });
+
 
     socketConnection.on("connect", () => {
       setStatus("Connected");

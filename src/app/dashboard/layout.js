@@ -27,7 +27,7 @@ export default function DashboardLayout({ children }) {
             {/* Footer */}
             <footer className={`py-4 px-6 ${isDark ? 'bg-gray-800' : 'bg-white'} border-t ${isDark ? 'border-gray-700' : 'border-gray-200'}`}>
               <div className="container mx-auto text-center text-sm opacity-70">
-                <p>Team Vikasana - Police Beat Management System</p>
+                <p>E-Patrol - Police Beat Management System</p>
               </div>
             </footer>
           </div>

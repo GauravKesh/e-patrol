@@ -1,21 +1,21 @@
+// utils/api.ts or wherever you store helpers
 import axios from 'axios';
 import { getToken } from './tokenHelper';
+import config from '@/app/context/Config';
 
 const api = axios.create({
-    baseURL:"http://localhost:9090/api/v1",
-    
+    baseURL: `${config.baseUrl}/api/v1`,
 });
-   
 
 api.interceptors.request.use(
-    (config) => {
-        if (typeof window !== "undefined") {
+    (reqConfig) => {
+        if (typeof window !== 'undefined') {
             const token = getToken();
             if (token) {
-                config.headers.Authorization = `Bearer ${token}`;
+                reqConfig.headers.Authorization = `Bearer ${token}`;
             }
         }
-        return config;
+        return reqConfig;
     },
     (error) => Promise.reject(error)
 );

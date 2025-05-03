@@ -1,7 +1,6 @@
 "use client";
-
 import api from "@/utils/axiosInstance";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import { useSocket } from "@/app/context/socketProvider";
 import ToastContainer from "@/utils/toastContainer";
@@ -15,8 +14,33 @@ const SOSPage = () => {
     const [liveSOSMessages, setLiveSOSMessages] = useState([]);
     const [previousSOSMessages, setPreviousSOSMessages] = useState([]);
     const [loadingPrevious, setLoadingPrevious] = useState(false);
-    
+    const [isSoundPlaying, setIsSoundPlaying] = useState(false);
+    const audioRef = useRef(null);
 
+    const getUserLocation = () => {
+        return new Promise((resolve, reject) => {
+            if (!navigator.geolocation) {
+                reject(new Error("Geolocation is not supported "));
+            } else {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        resolve({
+                            latitude: position.coords.latitude,
+                            longitude: position.coords.longitude,
+                        });
+                    },
+                    (error) => {
+                        reject(new Error(`Geolocation error: ${error.message}`));
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0,
+                    }
+                );
+            }
+        });
+    };
     useEffect(() => {
         if (!socket) return;
 
@@ -32,20 +56,33 @@ const SOSPage = () => {
                     icon: "/favicon.ico",
                 });
             }
+            setIsSoundPlaying(true);
 
             // Play sound (audio logic stays the same as before)
-            const audio = new Audio("/sounds/e1.mp3");
-            audio.play();
-            setTimeout(() => {
-                audio.pause();
-                audio.currentTime = 0;
-            }, 5000);
+            if(audioRef.current) {
+                audioRef.current.play();
+              
+                setTimeout(() => {
+                    audioRef.current.pause();
+                    audioRef.current.currentTime = 0;
+                    setIsSoundPlaying(false);
+                }, 5000);
+            }
         });
 
         return () => {
             socket.off("newSOS");
         };
     }, [socket]);
+
+    
+    const stopSound = () => {
+        if (audioRef.current) {
+            audioRef.current.pause();
+            audioRef.current.currentTime = 0;
+            setIsSoundPlaying(false);
+        }
+    };
 
     const sendSOS = async () => {
         if (socket && socket.connected) {
@@ -100,7 +137,9 @@ const SOSPage = () => {
     );
 
     return (
+
         <div className="min-h-screen pt-10 flex flex-col items-center">
+            <audio ref={audioRef} src="/sounds/e1.mp3" preload="auto" />
             <div className="bg-white rounded-3xl p-10 w-full space-y-8">
                 <h1 className="text-4xl font-extrabold text-center text-blue-700 mb-4">SOS Dashboard</h1>
                 <p className="text-center text-lg text-gray-700 mb-6">
@@ -121,6 +160,8 @@ const SOSPage = () => {
                     >
                         Send SOS
                     </button>
+
+
                 </div>
 
                 <div className="flex justify-center gap-6 mb-8 flex-wrap">
@@ -131,6 +172,16 @@ const SOSPage = () => {
                     >
                         {loadingPrevious ? "Loading..." : "Load Previous SOS"}
                     </button>
+
+
+                    {isSoundPlaying && (
+                        <button
+                            onClick={stopSound}
+                            className="px-6 py-3 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition"
+                        >
+                            🔇 Stop Sound
+                        </button>
+                    )}
                 </div>
 
                 <section>

@@ -14,7 +14,7 @@ export const SocketProvider = ({ children }) => {
 
   useEffect(() => {
     if (typeof window !== "undefined") { 
-    const socketConnection = io("https://cyber-acrt.onrender.com/", {
+      const socketConnection = io("https://e-patrol-backend.onrender.com/", {
       transports: ["websocket"],
     });
 

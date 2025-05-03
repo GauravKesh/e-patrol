@@ -18,7 +18,7 @@ export default function LoginPage() {
         e.preventDefault();
         try {
             const { data } = await axios.post(
-                'https://cyber-acrt.onrender.com/api/v1/auth/login',
+                'https://e-patrol-backend.onrender.com/api/v1/auth/login',
                 form,
                 {
                     headers: { 'Content-Type': 'application/json' },

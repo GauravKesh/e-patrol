@@ -1,4 +1,5 @@
 "use client";
+
 import api from "@/utils/axiosInstance";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
@@ -7,7 +8,9 @@ import ToastContainer from "@/utils/toastContainer";
 import { getToken } from "@/utils/tokenHelper";
 
 const SOSPage = () => {
-    const { socket, status } = useSocket();
+    const socketContext = useSocket();
+    const socket = socketContext?.socket;
+    const status = socketContext?.status || "Disconnected";
     const [message, setMessage] = useState("");
     const [liveSOSMessages, setLiveSOSMessages] = useState([]);
     const [previousSOSMessages, setPreviousSOSMessages] = useState([]);
